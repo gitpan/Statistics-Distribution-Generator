@@ -35,11 +35,10 @@
             "Exporter" : "0",
             "List::AllUtils" : "0",
             "Test::More" : "0",
-            "Text::Table" : "0",
             "perl" : "5.018000"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "0.003"
+   "version" : "0.004"
 }
