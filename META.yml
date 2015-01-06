@@ -22,4 +22,4 @@ requires:
   List::AllUtils: '0'
   Test::More: '0'
   perl: '5.018000'
-version: '0.004'
+version: '0.005'
