@@ -23,4 +23,4 @@ requires:
   Statistics::Descriptive: '0'
   Test::More: '0'
   perl: '5.018000'
-version: '0.006'
+version: '0.007'
