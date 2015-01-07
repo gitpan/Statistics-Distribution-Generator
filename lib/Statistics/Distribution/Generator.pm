@@ -5,6 +5,7 @@ use utf8;
 use overload (
     '0+' => '_render',
     '""' => '_render',
+    '@{}' => '_render',
     '|' => '_add_alternative',
     'x' => '_add_dimension',
     fallback => 1,
@@ -14,7 +15,7 @@ use List::AllUtils qw( reduce );
 use Exporter qw( import );
 use vars qw( $VERSION );
 
-$VERSION = '0.007';
+$VERSION = '0.008';
 
 sub logistic ();
 
@@ -27,7 +28,10 @@ our $e = exp 1;
 
 sub _render {
     my $self = shift;
-    if ($self->{ alts }) {
+    if ($self->{ dims }) {
+        return [ map { $_->_render } @{$self->{ dims }} ];
+    }
+    elsif ($self->{ alts }) {
         my $accum = reduce { $a + $b } map { $_->{ weight } // 1 } @{$self->{ alts }};
         my $n = rand() * $accum;
         my $answer;
@@ -39,13 +43,6 @@ sub _render {
             }
         }
         return $answer;
-    }
-    elsif ($self->{ dims }) {
-        my @rv;
-        for my $dimension (@{$self->{ dims }}) {
-            push @rv, $dimension->_render;
-        }
-        return \@rv;
     }
     else {
         die "Something horrible has happened";
@@ -154,7 +151,7 @@ sub _gamma_frac {
 sub _add_alternative {
     my ($lhs, $rhs, $swapped) = @_;
     ($lhs, $rhs) = ($rhs, $lhs) if $swapped;
-    $rhs = supplied $rhs unless ref($rhs) =~ /^Statistics::Distribution::Generator/;
+    $rhs = supplied($rhs) unless ref($rhs) =~ /^Statistics::Distribution::Generator/;
     my $self
         = ref($lhs) eq 'Statistics::Distribution::Generator'
         ? { %$lhs }
@@ -168,7 +165,7 @@ sub _add_alternative {
 sub _add_dimension {
     my ($lhs, $rhs, $swapped) = @_;
     ($lhs, $rhs) = ($rhs, $lhs) if $swapped;
-    $rhs = supplied $rhs unless ref($rhs) =~ /^Statistics::Distribution::Generator/;
+    $rhs = supplied($rhs) unless ref($rhs) =~ /^Statistics::Distribution::Generator/;
     my $self
         = ref($lhs) eq 'Statistics::Distribution::Generator'
         ? { %$lhs }
@@ -322,7 +319,7 @@ functions
 
 =head1 VERSION
 
-Version 0.007
+Version 0.008
 
 =head1 SYNOPSIS
 
