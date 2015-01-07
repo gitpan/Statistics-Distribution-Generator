@@ -20,6 +20,7 @@ no_index:
 requires:
   Exporter: '0'
   List::AllUtils: '0'
+  Statistics::Descriptive: '0'
   Test::More: '0'
   perl: '5.018000'
-version: '0.005'
+version: '0.006'
